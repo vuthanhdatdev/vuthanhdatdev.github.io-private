@@ -1,9 +1,13 @@
 import {FC, Fragment} from 'react';
 import '../App.css';
 import NavbarComponent from "../components/navbar.component";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLinkedin, faGithub, faTwitter, faFacebook } from '@fortawesome/free-brands-svg-icons'
+import AboutComponent from "../components/about.component";
+
 const PortfolioPage: FC<any> = () => {
     const firstName = 'Dat '
-    const lastName = 'Ta Vu Thanh'
+    const lastName = 'Vu Thanh'
     const address = `Saigon · Vietnam · (+84) 94-347-6316 ·`
     const email = `dev.thanhdat@gmail.com`
     const shortIntroduction = `I am passionate software wizard with 6 years experience of Java, AWS, NodeJS`
@@ -14,27 +18,17 @@ const PortfolioPage: FC<any> = () => {
     return <Fragment>
         <NavbarComponent firstName={firstName} lastName={lastName}/>
         <div className="container-fluid p-0">
-            <section className="resume-section" id="about">
-                <div className="resume-section-content">
-                    <h1 className="mb-0">
-                        {firstName}
-                        <span className="text-primary">{lastName}</span>
-                    </h1>
-                    <div className="subheading mb-5">
-                        {address}
-                        <a href={`mailto:${email}`}>{email}</a>
-                    </div>
-                    <p className="lead mb-5">
-                        {shortIntroduction}
-                    </p>
-                    <div className="social-icons">
-                        <a className="social-icon" href={linkedInUrl}><i className="fab fa-linkedin-in"></i></a>
-                        <a className="social-icon" href={githubUrl}><i className="fab fa-github"></i></a>
-                        <a className="social-icon" href={twitterUrl}><i className="fab fa-twitter"></i></a>
-                        <a className="social-icon" href={facebookUrl}><i className="fab fa-facebook-f"></i></a>
-                    </div>
-                </div>
-            </section>
+            <AboutComponent
+                firstName={firstName}
+                lastName={lastName}
+                email={email}
+                shortIntroduction={shortIntroduction}
+                address={address}
+                linkedInUrl={linkedInUrl}
+                githubUrl={githubUrl}
+                twitterUrl={twitterUrl}
+                facebookUrl={facebookUrl}
+            />
             <hr className="m-0" />
             <section className="resume-section" id="experience">
                 <div className="resume-section-content">
