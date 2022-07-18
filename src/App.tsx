@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
-import ExampleComponent from "./components/example.component";
+import PortfolioPage from "./pages/portfolio.page";
 
 const App = () => {
   return (
-      <ExampleComponent/>
+      <PortfolioPage/>
   );
 }
 
