@@ -16,7 +16,6 @@ export interface AboutComponentProps {
 
 const AboutComponent: FC<AboutComponentProps> = (props: AboutComponentProps) => {
     const { firstName, lastName, facebookUrl, githubUrl, linkedInUrl, twitterUrl, address, email, shortIntroduction } = props;
-    const name = `${firstName} ${lastName}`
 
     return <section className="resume-section" id="about">
         <div className="resume-section-content">
