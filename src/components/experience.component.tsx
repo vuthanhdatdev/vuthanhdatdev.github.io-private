@@ -24,8 +24,9 @@ export const ExperienceComponent: FC<ExperienceComponentProps> = (props: Experie
     return <section className="resume-section" id="experience">
         <div className="resume-section-content">
             <h2 className="mb-5">Experience</h2>
-            {data?.map(value =>
+            {data?.map((value, idx) =>
                 <ExperienceRowComponent
+                    key={idx}
                     {...value}
                 />
             )}

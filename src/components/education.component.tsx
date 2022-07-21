@@ -10,8 +10,8 @@ export const EducationComponent: FC<EducationComponentProps> = (props: Education
     return <section className="resume-section" id="education">
         <div className="resume-section-content">
             <h2 className="mb-5">Education</h2>
-            {data.map(value => {
-                return <EducationRowComponent {...value} />
+            {data.map((value, idx) => {
+                return <EducationRowComponent key={idx} {...value} />
             })}
         </div>
 
@@ -24,8 +24,8 @@ export const EducationRowComponent: FC<any> = (props: EducationDataProps) => {
         <div className="flex-grow-1">
             <h3 className="mb-0">{school}</h3>
             <div className="subheading mb-3">{degreeType}</div>
-            <div>{major}</div>
-            <p>{gpa}</p>
+            <div>Major: {major}</div>
+            <p>GPA: {gpa}</p>
         </div>
         <div className="flex-shrink-0"><span className="text-primary">{startFrom} - {!!endFrom ? endFrom : 'Present'}</span></div>
     </div>
