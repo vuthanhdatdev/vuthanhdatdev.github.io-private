@@ -35,5 +35,12 @@ export const workData: WorkDataProps[] = [
         endFrom: 'December 2016',
         position: 'Software Engineer',
     },
+    {
+        companyName: 'Freelancer',
+        detail: '',
+        startFrom: 'June 2014',
+        endFrom: 'December 2017',
+        position: 'Freelance Developer',
+    },
 
 ];

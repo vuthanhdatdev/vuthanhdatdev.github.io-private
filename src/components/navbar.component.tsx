@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import avatar from '../assets/logo512.png';
+import avatar from '../assets/profile.jpg';
 export interface NavbarComponentProps {
     firstName: string;
     lastName: string;
