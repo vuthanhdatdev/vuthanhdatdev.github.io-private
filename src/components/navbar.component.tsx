@@ -39,7 +39,6 @@ const NavbarComponent: FC<NavbarComponentProps> = (props: NavbarComponentProps) 
     const [current, setCurrent] = useState<string | null>('#page-top');
     const currentScrollPos = !!currentElementIndexInViewport && currentElementIndexInViewport > -1 ? currentElementIndexInViewport : 0;
     const currentSection = hrefs[currentScrollPos];
-    console.log(currentSection);
     const onClickNavUrl = (e: React.MouseEvent<HTMLAnchorElement>): void => {
         const anchor: HTMLAnchorElement = e.currentTarget;
         setCurrent(anchor.getAttribute('href'));
