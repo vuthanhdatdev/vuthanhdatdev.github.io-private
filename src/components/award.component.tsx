@@ -1,16 +1,17 @@
-import {FC} from 'react';
+import {FC, RefObject} from 'react';
 import {CertificationDataProps} from "../data/education.data";
 
 
 export interface AwardComponentProps {
     awards: string[];
     certifications: CertificationDataProps[];
+    sectionRef: RefObject<HTMLTableSectionElement>;
 
 }
 
 export const AwardComponent: FC<AwardComponentProps> = (props: AwardComponentProps) => {
-    const { certifications } = props;
-    return <section className="resume-section" id="awards">
+    const { certifications, sectionRef } = props;
+    return <section ref={sectionRef} className="resume-section" id="awards">
         <div className="resume-section-content">
             <h2 className="mb-5">Awards & Certifications</h2>
             {/*<ul className="fa-ul mb-0">*/}

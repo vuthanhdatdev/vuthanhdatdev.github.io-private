@@ -1,8 +1,9 @@
-import {FC} from 'react';
+import {FC, RefObject} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFacebook, faGithub, faLinkedin, faTwitter} from "@fortawesome/free-brands-svg-icons";
 
 export interface AboutComponentProps {
+    sectionRef: RefObject<HTMLTableSectionElement>;
     firstName: string;
     lastName: string;
     email: string;
@@ -15,9 +16,9 @@ export interface AboutComponentProps {
 }
 
 const AboutComponent: FC<AboutComponentProps> = (props: AboutComponentProps) => {
-    const { firstName, lastName, facebookUrl, githubUrl, linkedInUrl, twitterUrl, address, email, shortIntroduction } = props;
+    const { sectionRef, firstName, lastName, facebookUrl, githubUrl, linkedInUrl, twitterUrl, address, email, shortIntroduction } = props;
 
-    return <section className="resume-section" id="about">
+    return <section ref={sectionRef} className="resume-section" id="about">
         <div className="resume-section-content">
             <h1 className="mb-0">
                 {firstName}

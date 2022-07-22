@@ -1,13 +1,14 @@
-import {FC} from "react";
+import {FC, RefObject} from "react";
 import {EducationDataProps} from "../data/education.data";
 
 export interface EducationComponentProps {
     educations: EducationDataProps[];
+    sectionRef: RefObject<HTMLTableSectionElement>;
 }
 
 export const EducationComponent: FC<EducationComponentProps> = (props: EducationComponentProps) => {
-    const { educations,  } = props;
-    return <section className="resume-section" id="education">
+    const { educations, sectionRef } = props;
+    return <section ref={sectionRef} className="resume-section" id="education">
         <div className="resume-section-content">
             <h2 className="mb-5">Education</h2>
             {educations.map((value, idx) => {

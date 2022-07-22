@@ -5,9 +5,10 @@ import classNames from 'classnames';
 export interface NavbarComponentProps {
     firstName: string;
     lastName: string;
+    currentElementIndexInViewport?: number;
 }
 const NavbarComponent: FC<NavbarComponentProps> = (props: NavbarComponentProps) => {
-    const { firstName, lastName } = props;
+    const { firstName, lastName, currentElementIndexInViewport } = props;
     const name = `${firstName} ${lastName}`;
     const hrefs = [
         {
@@ -35,10 +36,13 @@ const NavbarComponent: FC<NavbarComponentProps> = (props: NavbarComponentProps) 
             text: 'Awards'
         }
         ];
-    const [current, setCurrent] = useState('#page-top');
+    const [current, setCurrent] = useState<string | null>('#page-top');
+    const currentScrollPos = !!currentElementIndexInViewport && currentElementIndexInViewport > -1 ? currentElementIndexInViewport : 0;
+    const currentSection = hrefs[currentScrollPos];
+    console.log(currentSection);
     const onClickNavUrl = (e: React.MouseEvent<HTMLAnchorElement>): void => {
         const anchor: HTMLAnchorElement = e.currentTarget;
-        setCurrent(anchor.text)
+        setCurrent(anchor.getAttribute('href'));
     }
     return <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
             <a className="navbar-brand js-scroll-trigger" href="#page-top" onClick={event => onClickNavUrl(event)}>
@@ -58,14 +62,14 @@ const NavbarComponent: FC<NavbarComponentProps> = (props: NavbarComponentProps) 
                 <ul className="navbar-nav">
                     {hrefs.map(value => {
                         const {href, text} = value;
-                        const active = (current === text)
+                        const active = (current === href) || (currentSection.href === href)
                         const navItemClasses: any = classNames(
                             'nav-link',
                             'js-scroll-trigger',
                             {'active': active}
                         );
-                        return <li key={text} className="nav-item">
-                            <a className={navItemClasses} onClick={e => onClickNavUrl(e)} href={href}>{text}</a>
+                        return <li key={href} value={href} className="nav-item">
+                            <a key={href} className={navItemClasses} onClick={e => onClickNavUrl(e)} href={href}>{text}</a>
                         </li>;
                     })}
                 </ul>
