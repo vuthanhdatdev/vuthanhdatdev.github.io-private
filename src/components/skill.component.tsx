@@ -11,7 +11,8 @@ export interface SkillComponentProps {
 }
 
 export const SkillComponent: FC<SkillComponentProps> = (props: SkillComponentProps) => {
-    return <section className="resume-section" id="skills">
+    const { sectionRef } = props;
+    return <section ref={sectionRef} className="resume-section" id="skills">
         <div className="resume-section-content">
             <h2 className="mb-5">Skills</h2>
             <div className="subheading mb-3">Programming Languages & Tools</div>
