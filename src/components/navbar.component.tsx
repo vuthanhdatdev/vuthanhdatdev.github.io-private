@@ -1,4 +1,4 @@
-import {FC, useState} from 'react';
+import {FC, useState, MouseEvent} from 'react';
 import avatar from '../assets/profile.jpg';
 import classNames from 'classnames';
 
@@ -9,6 +9,7 @@ export interface NavbarComponentProps {
 }
 const NavbarComponent: FC<NavbarComponentProps> = (props: NavbarComponentProps) => {
     const { firstName, lastName, currentElementIndexInViewport } = props;
+    const [open, setOpen] = useState(false);
     const name = `${firstName} ${lastName}`;
     const hrefs = [
         {
@@ -35,7 +36,16 @@ const NavbarComponent: FC<NavbarComponentProps> = (props: NavbarComponentProps) 
             href: '#awards',
             text: 'Awards'
         }
-        ];
+    ];
+    const onNavClick = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setOpen(!open);
+    };
+    const navBarClasses: string = classNames(
+        'collapse',
+        'navbar-collapse',
+        {'show': open}
+    );
     const currentScrollPos = !!currentElementIndexInViewport && currentElementIndexInViewport > -1 ? currentElementIndexInViewport : 0;
     const currentSection = hrefs[currentScrollPos];
     return <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
@@ -49,15 +59,16 @@ const NavbarComponent: FC<NavbarComponentProps> = (props: NavbarComponentProps) 
                     data-bs-target="#navbarResponsive"
                     aria-controls="navbarResponsive"
                     aria-expanded="false"
+                    onClick={event => onNavClick(event)}
                     aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
-            <div className="collapse navbar-collapse" id="navbarResponsive">
+            <div className={navBarClasses} id="navbarResponsive">
                 <ul className="navbar-nav">
                     {hrefs.map(value => {
                         const {href, text} = value;
                         const active = (currentSection.href === href)
-                        const navItemClasses: any = classNames(
+                        const navItemClasses: string = classNames(
                             'nav-link',
                             'js-scroll-trigger',
                             {'active': active}
