@@ -5,9 +5,10 @@ import AboutComponent from "../components/about.component";
 import {ExperienceComponent} from "../components/experience.component";
 import {workData} from "../data/work.data";
 import {EducationComponent} from "../components/education.component";
-import {educationData} from "../data/education.data";
+import {certificationData, educationData} from "../data/education.data";
 import {SkillComponent} from "../components/skill.component";
 import {AwardComponent} from "../components/award.component";
+import {InterestsComponent} from "../components/interests.component";
 
 const PortfolioPage: FC<any> = () => {
     const firstName = 'Dat '
@@ -20,14 +21,14 @@ const PortfolioPage: FC<any> = () => {
     const twitterUrl = 'https://twitter.com/vuthanhdat_dev';
     const facebookUrl = 'https://www.facebook.com/vuthanhdat.developer';
     const shortBriefLife = `
-    Apart from being a web developer,
+    Apart from being a developer,
      I enjoy most of my time being outdoors.
-      In the winter, I am an avid skier and novice ice climber.
+      In the vacations, I am an motor rider to explore the worlds(and all the states of Vietnam).
        During the free time in my life, I enjoy mechanical keyboard building.`;
     const shortBriefLife2 = `When forced indoors,
-     I follow a number of sci-fi and fantasy genre movies and television shows,
-      I am an aspiring chef,
-       and I spend a large amount of my free time exploring the latest technology advancements in the front-end web development world.`;
+     I do practice with some kind of music instruments,
+      I am an part-time guitarist,
+       and I spend a large amount of my free time exploring the latest technology advancements in the full-stack development world.`;
     return <Fragment>
         <NavbarComponent
             firstName={firstName}
@@ -48,19 +49,15 @@ const PortfolioPage: FC<any> = () => {
             <hr className="m-0" />
             <ExperienceComponent data={workData} />
             <hr className="m-0" />
-            <EducationComponent data={educationData}/>
+            <EducationComponent
+                educations={educationData}
+            />
             <hr className="m-0" />
             <SkillComponent workFlows={[]}/>
             <hr className="m-0" />
-            <section className="resume-section" id="interests">
-                <div className="resume-section-content">
-                    <h2 className="mb-5">Interests</h2>
-                    {/*<p>{shortBriefLife}</p>*/}
-                    {/*<p className="mb-0">{shortBriefLife2}</p>*/}
-                </div>
-            </section>
+            <InterestsComponent line1={shortBriefLife} line2={shortBriefLife2} />
             <hr className="m-0" />
-            <AwardComponent awards={[]} />
+            <AwardComponent certifications={certificationData} awards={[]} />
         </div>
     </Fragment>
 }

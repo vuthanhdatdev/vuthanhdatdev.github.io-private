@@ -2,15 +2,15 @@ import {FC} from "react";
 import {EducationDataProps} from "../data/education.data";
 
 export interface EducationComponentProps {
-    data: EducationDataProps[];
+    educations: EducationDataProps[];
 }
 
 export const EducationComponent: FC<EducationComponentProps> = (props: EducationComponentProps) => {
-    const { data } = props;
+    const { educations,  } = props;
     return <section className="resume-section" id="education">
         <div className="resume-section-content">
             <h2 className="mb-5">Education</h2>
-            {data.map((value, idx) => {
+            {educations.map((value, idx) => {
                 return <EducationRowComponent key={idx} {...value} />
             })}
         </div>
