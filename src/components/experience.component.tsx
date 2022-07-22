@@ -1,8 +1,9 @@
-import {FC} from 'react';
+import {FC, RefObject} from 'react';
 import {WorkDataProps} from "../data/work.data";
 
 export interface ExperienceComponentProps {
     data: WorkDataProps[];
+    sectionRef: RefObject<HTMLTableSectionElement>;
 }
 
 
@@ -20,8 +21,8 @@ export const ExperienceRowComponent: FC<WorkDataProps> = (props: WorkDataProps) 
 };
 
 export const ExperienceComponent: FC<ExperienceComponentProps> = (props: ExperienceComponentProps) => {
-    const {data} = props;
-    return <section className="resume-section" id="experience">
+    const {data, sectionRef} = props;
+    return <section ref={sectionRef} className="resume-section" id="experience">
         <div className="resume-section-content">
             <h2 className="mb-5">Experience</h2>
             {data?.map((value, idx) =>

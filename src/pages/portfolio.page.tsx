@@ -1,4 +1,4 @@
-import {FC, Fragment} from 'react';
+import {FC, Fragment, RefObject} from 'react';
 import '../App.css';
 import NavbarComponent from "../components/navbar.component";
 import AboutComponent from "../components/about.component";
@@ -10,7 +10,14 @@ import {SkillComponent} from "../components/skill.component";
 import {AwardComponent} from "../components/award.component";
 import {InterestsComponent} from "../components/interests.component";
 
-const PortfolioPage: FC<any> = () => {
+export interface PortfolioPageProps {
+    currentElementIndexInViewport: number;
+    sectionRefs: RefObject<HTMLTableSectionElement>[];
+}
+
+const PortfolioPage: FC<PortfolioPageProps> = (props) => {
+
+    const { currentElementIndexInViewport, sectionRefs } = props;
     const firstName = 'Dat '
     const lastName = 'Vu Thanh'
     const address = `Saigon · Vietnam · (+84) 94-347-6316 ·`
@@ -31,11 +38,13 @@ const PortfolioPage: FC<any> = () => {
        and I spend a large amount of my free time exploring the latest technology advancements in the full-stack development world.`;
     return <Fragment>
         <NavbarComponent
+            currentElementIndexInViewport={currentElementIndexInViewport}
             firstName={firstName}
             lastName={lastName}
         />
         <div className="container-fluid p-0">
             <AboutComponent
+                sectionRef={sectionRefs[0]}
                 firstName={firstName}
                 lastName={lastName}
                 email={email}
@@ -47,17 +56,28 @@ const PortfolioPage: FC<any> = () => {
                 facebookUrl={facebookUrl}
             />
             <hr className="m-0" />
-            <ExperienceComponent data={workData} />
+            <ExperienceComponent sectionRef={sectionRefs[1]} data={workData} />
             <hr className="m-0" />
             <EducationComponent
+                sectionRef={sectionRefs[2]}
                 educations={educationData}
             />
             <hr className="m-0" />
-            <SkillComponent workFlows={[]}/>
+            <SkillComponent
+                sectionRef={sectionRefs[3]}
+                workFlows={[]}
+            />
             <hr className="m-0" />
-            <InterestsComponent line1={shortBriefLife} line2={shortBriefLife2} />
+            <InterestsComponent
+                sectionRef={sectionRefs[4]}
+                line1={shortBriefLife}
+                line2={shortBriefLife2}
+            />
             <hr className="m-0" />
-            <AwardComponent certifications={certificationData} awards={[]} />
+            <AwardComponent
+                sectionRef={sectionRefs[5]}
+                certifications={certificationData} awards={[]}
+            />
         </div>
     </Fragment>
 }

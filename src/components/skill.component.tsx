@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import {FC, RefObject} from 'react';
 
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faJava, faLinux, faHtml5, faCss3Alt, faNodeJs, faReact, faAngular, faAmazon } from '@fortawesome/free-brands-svg-icons';
@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export interface SkillComponentProps {
     workFlows: string[];
+    sectionRef: RefObject<HTMLTableSectionElement>;
 
 }
 
