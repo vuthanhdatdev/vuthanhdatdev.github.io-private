@@ -1,11 +1,15 @@
 import {FC} from 'react';
+import {CertificationDataProps} from "../data/education.data";
+
 
 export interface AwardComponentProps {
     awards: string[];
+    certifications: CertificationDataProps[];
 
 }
 
 export const AwardComponent: FC<AwardComponentProps> = (props: AwardComponentProps) => {
+    const { certifications } = props;
     return <section className="resume-section" id="awards">
         <div className="resume-section-content">
             <h2 className="mb-5">Awards & Certifications</h2>
@@ -49,6 +53,23 @@ export const AwardComponent: FC<AwardComponentProps> = (props: AwardComponentPro
             {/*        Place - James Buchanan High School - Hackathon 2005*/}
             {/*    </li>*/}
             {/*</ul>*/}
+
+            {certifications.map((value, idx) => {
+                return <CertificationRowComponent key={idx} {...value} />
+            })}
         </div>
     </section>
+};
+
+export const CertificationRowComponent: FC<any> = (props: CertificationDataProps) => {
+    const {startFrom, endFrom, name, score, providedBy} = props;
+    return <div className="d-flex flex-column flex-md-row justify-content-between mb-5">
+        <div className="flex-grow-1">
+            <h3 className="mb-0">{name}</h3>
+            <div className="subheading mb-3">{providedBy}</div>
+            <p hidden={!score}>Score: {score}</p>
+        </div>
+        <div hidden={!startFrom && !endFrom} className="flex-shrink-0"><span
+            className="text-primary">{startFrom} - {endFrom}</span></div>
+    </div>
 };
