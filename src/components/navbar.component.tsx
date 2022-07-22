@@ -46,6 +46,10 @@ const NavbarComponent: FC<NavbarComponentProps> = (props: NavbarComponentProps) 
         'navbar-collapse',
         {'show': open}
     );
+    const navBtnClasses: string = classNames(
+        'navbar-toggler',
+        {'collapsed': !open}
+    );
     const currentScrollPos = !!currentElementIndexInViewport && currentElementIndexInViewport > -1 ? currentElementIndexInViewport : 0;
     const currentSection = hrefs[currentScrollPos];
     return <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
@@ -53,12 +57,12 @@ const NavbarComponent: FC<NavbarComponentProps> = (props: NavbarComponentProps) 
                 <span className="d-block d-lg-none">{name}</span>
                 <span className="d-none d-lg-block"><img className="img-fluid img-profile rounded-circle mx-auto mb-2" src={avatar} alt={name} /></span>
             </a>
-            <button className="navbar-toggler"
+            <button className={navBtnClasses}
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarResponsive"
                     aria-controls="navbarResponsive"
-                    aria-expanded="false"
+                    aria-expanded={open}
                     onClick={event => onNavClick(event)}
                     aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
