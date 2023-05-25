@@ -1,0 +1,64 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:14
+
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - run:
+          name: Build for production
+          command: npm run build
+
+  deploy:
+    docker:
+      - image: circleci/node:14
+
+    steps:
+      - checkout
+      - run:
+          name: Deploy to GitHub Pages
+          command: |
+            git config --global user.email "vuthanhdat.dev+ci@gmail.com"
+            git config --global user.name "Joe The Dev - CircleCI"
+            git remote set-url origin "https://$GH_TOKEN:x-oauth-basic@github.com/vuthanhdatdev/vuthanhdatdev.github.io.git"
+            git checkout -b gh-pages
+            git add .
+            git commit -m "Deployed by CircleCI [build $CIRCLE_BUILD_NUM]"
+            git push origin gh-pages
+      - run:
+          name: Create GitHub Deployment
+          command: |
+            curl -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d '{
+                  "ref": "gh-pages",
+                  "environment": "production",
+                  "auto_merge": false,
+                  "required_contexts": [],
+                  "payload": {
+                    "build_number": "'"$CIRCLE_BUILD_NUM"'"
+                  }
+                }' \
+              "https://api.github.com/repos/your-username/your-repo/deployments"
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - develop
+      - deploy:
+          filters:
+            branches:
+              only:
+                - develop
