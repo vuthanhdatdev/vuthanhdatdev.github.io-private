@@ -1,0 +1,64 @@
+version: 2.1
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build-and-deploy:
+          filters:
+            branches:
+              only:
+                - develop
+
+jobs:
+  build-and-deploy:
+    docker:
+      - image: cimg/node:20.2.0
+
+    steps:
+      - checkout
+      - run:
+          name: Set CI environment variable to false
+          command: |
+            echo "export CI=false" >> $BASH_ENV
+      - run:
+          name: Remove node_modules directory
+          command: rm -rf node_modules
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - run:
+          name: Build for production
+          command: npm run build
+      - run:
+          name: Deploy to GitHub Pages
+          command: |
+            cp .gitignore .gitignore.bak
+            grep -v '^/build' .gitignore.bak > .gitignore
+            rm .gitignore.bak
+            git config --global user.email "vuthanhdat.dev+ci@gmail.com"
+            git config --global user.name "Joe The Dev - CircleCI"
+            git remote set-url origin "https://$GH_TOKEN:x-oauth-basic@github.com/vuthanhdatdev/$GH_TARGET_REPO"
+            rm -rf ./src
+            mv ./build/* .
+            git checkout --orphan gh-pages
+            git add .
+            git commit -m "Deployed by CircleCI [build #$CIRCLE_BUILD_NUM]"
+            git push -f origin gh-pages
+      - run:
+          name: Create GitHub Deployment
+          command: |
+            curl -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d '{
+                  "ref": "gh-pages",
+                  "environment": "production",
+                  "auto_merge": false,
+                  "required_contexts": [],
+                  "payload": {
+                    "build_number": "'"#$CIRCLE_BUILD_NUM"'"
+                  }
+                }' \
+              "https://api.github.com/repos/vuthanhdatdev/vuthanhdatdev.github.io/deployments"
