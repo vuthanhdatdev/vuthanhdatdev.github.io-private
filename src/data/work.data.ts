@@ -8,10 +8,17 @@ export interface WorkDataProps {
 
 export const workData: WorkDataProps[] = [
     {
+        companyName: 'LeapXpert',
+        detail: '',
+        startFrom: 'December 2022',
+        endFrom: '',
+        position: 'Senior Software Engineer',
+    },
+    {
         companyName: 'PayOK In Partnership with Positive Thinking Company',
         detail: '',
         startFrom: 'March 2021',
-        endFrom: '',
+        endFrom: 'December 2022',
         position: 'Senior Software Engineer',
     },
     {

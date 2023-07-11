@@ -50,6 +50,7 @@ const NavbarComponent: FC<NavbarComponentProps> = (props: NavbarComponentProps) 
         'navbar-toggler',
         {'collapsed': !open}
     );
+    const pdfUrl = process.env.PUBLIC_URL + '/pdfs/TaVuThanhDat_CV.pdf';
     const currentScrollPos = !!currentElementIndexInViewport && currentElementIndexInViewport > -1 ? currentElementIndexInViewport : 0;
     const currentSection = hrefs[currentScrollPos];
     return <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
@@ -81,6 +82,18 @@ const NavbarComponent: FC<NavbarComponentProps> = (props: NavbarComponentProps) 
                             <a key={href} className={navItemClasses} href={href}>{text}</a>
                         </li>;
                     })}
+
+                    <li className="nav-item">
+                        <a
+                            className={classNames(
+                                'nav-link',
+                                'js-scroll-trigger')}
+                            href={pdfUrl}
+                            download="TaVuThanhDat.pdf"
+                        >
+                            Download My Portfolio
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
