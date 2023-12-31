@@ -13,10 +13,23 @@ export interface AboutComponentProps {
     githubUrl: string;
     twitterUrl: string;
     facebookUrl: string;
+    pdfUrl?: string;
 }
 
 const AboutComponent: FC<AboutComponentProps> = (props: AboutComponentProps) => {
-    const { sectionRef, firstName, lastName, facebookUrl, githubUrl, linkedInUrl, twitterUrl, address, email, shortIntroduction } = props;
+    const {
+        sectionRef,
+        firstName,
+        lastName,
+        facebookUrl,
+        githubUrl,
+        linkedInUrl,
+        twitterUrl,
+        address,
+        email,
+        shortIntroduction,
+        pdfUrl,
+    } = props;
 
     return <section ref={sectionRef} className="resume-section" id="about">
         <div className="resume-section-content">
@@ -31,11 +44,14 @@ const AboutComponent: FC<AboutComponentProps> = (props: AboutComponentProps) => 
             <p className="lead mb-5">
                 {shortIntroduction}
             </p>
+            <p className="subheading lead mb-5 align-content-center align-items-center">
+                <a className="btn btn-primary" href={pdfUrl}>Download My CV</a>
+            </p>
             <div className="social-icons">
-                <a className="social-icon" href={linkedInUrl}><FontAwesomeIcon icon={faLinkedin} /></a>
-                <a className="social-icon" href={githubUrl}><FontAwesomeIcon icon={faGithub} /></a>
-                <a className="social-icon" href={twitterUrl}><FontAwesomeIcon icon={faTwitter} /></a>
-                <a className="social-icon" href={facebookUrl}><FontAwesomeIcon icon={faFacebook} /></a>
+                <a className="social-icon" href={linkedInUrl}><FontAwesomeIcon icon={faLinkedin}/></a>
+                <a className="social-icon" href={githubUrl}><FontAwesomeIcon icon={faGithub}/></a>
+                <a className="social-icon" href={twitterUrl}><FontAwesomeIcon icon={faTwitter}/></a>
+                <a className="social-icon" href={facebookUrl}><FontAwesomeIcon icon={faFacebook}/></a>
             </div>
         </div>
     </section>

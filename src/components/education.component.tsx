@@ -1,8 +1,8 @@
 import {FC, RefObject} from "react";
-import {EducationDataProps} from "../data/education.data";
+import {Education} from "../data/portfolio.data";
 
 export interface EducationComponentProps {
-    educations: EducationDataProps[];
+    educations: Education[];
     sectionRef: RefObject<HTMLTableSectionElement>;
 }
 
@@ -19,7 +19,7 @@ export const EducationComponent: FC<EducationComponentProps> = (props: Education
     </section>
 }
 
-export const EducationRowComponent: FC<any> = (props: EducationDataProps) => {
+export const EducationRowComponent: FC<any> = (props: Education) => {
     const { gpa, startFrom, endFrom, school, degreeType, major } = props;
     return <div className="d-flex flex-column flex-md-row justify-content-between mb-5">
         <div className="flex-grow-1">

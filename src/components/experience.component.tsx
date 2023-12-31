@@ -1,14 +1,14 @@
 import {FC, RefObject} from 'react';
-import {WorkDataProps} from "../data/work.data";
+import {WorkHistory} from "../data/portfolio.data";
 
 export interface ExperienceComponentProps {
-    data: WorkDataProps[];
+    data: WorkHistory[];
     sectionRef: RefObject<HTMLTableSectionElement>;
 }
 
 
 
-export const ExperienceRowComponent: FC<WorkDataProps> = (props: WorkDataProps) => {
+export const ExperienceRowComponent: FC<WorkHistory> = (props: WorkHistory) => {
     const { position, companyName, startFrom, endFrom, detail } = props;
     return <div className="d-flex flex-column flex-md-row justify-content-between mb-5">
         <div className="flex-grow-1">
