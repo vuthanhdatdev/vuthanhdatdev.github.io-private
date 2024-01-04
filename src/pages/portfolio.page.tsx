@@ -1,4 +1,4 @@
-import {FC, Fragment, RefObject, useEffect, useState} from 'react';
+import {FC, Fragment, RefObject } from 'react';
 import '../App.css';
 import NavbarComponent from "../components/navbar.component";
 import AboutComponent from "../components/about.component";
@@ -7,7 +7,6 @@ import {EducationComponent} from "../components/education.component";
 import {SkillComponent} from "../components/skill.component";
 import {AwardComponent} from "../components/award.component";
 import {InterestsComponent} from "../components/interests.component";
-import axios, {AxiosResponse} from 'axios';
 import {PortfolioData} from "../data/portfolio.data";
 
 export interface PortfolioPageProps {

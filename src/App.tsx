@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useMemo, useRef, useState} from 'react';
+import React, {Fragment, useEffect, useRef, useState} from 'react';
 import './App.css';
 import PortfolioPage from "./pages/portfolio.page";
 import { Scrollspy } from '@makotot/ghostui'
@@ -22,8 +22,15 @@ const App = () => {
   useEffect(() => {
     const fetchGitHubPortfolioData = async () => {
       try {
+        const storedData = sessionStorage.getItem('portfolioData');
+        if (storedData) {
+          const parsedData = JSON.parse(storedData);
+          setData(parsedData);
+          return;
+        }
         const url = "https://raw.githubusercontent.com/vuthanhdatdev/vuthanhdatdev/main/data.json";
         const response: AxiosResponse<PortfolioData> = await axios.get(url);
+        sessionStorage.setItem('portfolioData', JSON.stringify(response.data));
         setData(response.data);
       } catch (error: any) {
         console.log(error);
