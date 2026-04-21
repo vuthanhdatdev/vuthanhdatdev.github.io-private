@@ -20,7 +20,15 @@ const PortfolioPage: FC<PortfolioPageProps> = ({
   sectionRefs,
   data
 }) => {
-  const { information, workHistories = [], educations = [], certifications } = data
+  const {
+    information,
+    workHistories = [],
+    educations = [],
+    certifications,
+    skills,
+    interests,
+    workflows
+  } = data
   const {
     firstName,
     lastName,
@@ -68,10 +76,11 @@ const PortfolioPage: FC<PortfolioPageProps> = ({
         <hr className="m-0" />
         <EducationComponent sectionRef={sectionRefs[2]} educations={educations} />
         <hr className="m-0" />
-        <SkillComponent sectionRef={sectionRefs[3]} workFlows={[]} />
+        <SkillComponent sectionRef={sectionRefs[3]} skills={skills} workflows={workflows} />
         <hr className="m-0" />
         <InterestsComponent
           sectionRef={sectionRefs[4]}
+          interests={interests}
           {...(shortBriefLife !== undefined && { shortBriefLife })}
         />
         <hr className="m-0" />

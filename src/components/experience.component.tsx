@@ -1,4 +1,6 @@
 import { FC, RefObject } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBuilding, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { WorkHistory } from '../data/portfolio.data'
 
 export interface ExperienceComponentProps {
@@ -12,8 +14,11 @@ export const ExperienceRowComponent: FC<WorkHistory & { isLast: boolean }> = ({
   startFrom,
   endFrom,
   detail,
+  techStack,
   isLast
 }) => {
+  const isCurrent = !endFrom
+
   return (
     <div className="experience-timeline-item">
       <div className="experience-timeline-marker">
@@ -23,10 +28,31 @@ export const ExperienceRowComponent: FC<WorkHistory & { isLast: boolean }> = ({
       <div className="d-flex flex-column flex-md-row justify-content-between mb-5 experience-timeline-content">
         <div className="flex-grow-1">
           <h3 className="mb-0 text-primary">{position}</h3>
-          <div className="subheading mb-3">{companyName}</div>
-          <p>{detail}</p>
+          <div className="subheading mb-2">{companyName}</div>
+          <div className="education-meta mb-3">
+            <span className="education-badge education-badge-major">
+              <FontAwesomeIcon icon={faBuilding} className="me-1" />
+              {companyName}
+            </span>
+            {isCurrent && (
+              <span className="education-badge education-badge-current">
+                <FontAwesomeIcon icon={faCircleCheck} className="me-1" />
+                Current
+              </span>
+            )}
+          </div>
+          <p className="mb-2">{detail}</p>
+          {techStack && techStack.length > 0 && (
+            <div className="experience-tech-stack">
+              {techStack.map((tech) => (
+                <span key={tech} className="experience-tech-tag">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 mt-2 mt-md-0">
           <span className="text-primary">
             {startFrom} - {endFrom || 'Present'}
           </span>

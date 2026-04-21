@@ -1,6 +1,15 @@
 import { FC, useState, MouseEvent } from 'react'
 import classNames from 'classnames'
 
+const NAV_ITEMS = [
+  { href: '#about', text: 'About' },
+  { href: '#experience', text: 'Experience' },
+  { href: '#education', text: 'Education' },
+  { href: '#skills', text: 'Skills' },
+  { href: '#interests', text: 'Interests' },
+  { href: '#awards', text: 'Awards' }
+]
+
 export interface NavbarComponentProps {
   firstName: string
   lastName: string
@@ -15,54 +24,26 @@ const NavbarComponent: FC<NavbarComponentProps> = ({
   profileImageUrl
 }) => {
   const [open, setOpen] = useState(false)
-  const name = `${firstName} ${lastName}`
-  const hrefs = [
-    {
-      href: '#about',
-      text: 'About'
-    },
-    {
-      href: '#experience',
-      text: 'Experience'
-    },
-    {
-      href: '#education',
-      text: 'Education'
-    },
-    {
-      href: '#skills',
-      text: 'Skills'
-    },
-    {
-      href: '#interests',
-      text: 'Interests'
-    },
-    {
-      href: '#awards',
-      text: 'Awards'
-    }
-  ]
-  const onNavClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const name = `${firstName.trim()} ${lastName}`
+
+  const onNavToggle = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setOpen(!open)
   }
-  const onNavItemClick = (_e: MouseEvent<HTMLAnchorElement>) => {
-    setOpen(false)
-  }
-  const navBarClasses: string = classNames('collapse', 'navbar-collapse', { show: open })
-  const navBtnClasses: string = classNames('navbar-toggler', { collapsed: !open })
+  const onNavItemClick = () => setOpen(false)
+
+  const navBarClasses = classNames('collapse', 'navbar-collapse', { show: open })
+  const navBtnClasses = classNames('navbar-toggler', { collapsed: !open })
+
   const currentScrollPos =
     currentElementIndexInViewport !== undefined && currentElementIndexInViewport >= 0
       ? currentElementIndexInViewport
       : 0
-  const currentSection = hrefs[currentScrollPos]
+  const currentSection = NAV_ITEMS[currentScrollPos]
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-      <a
-        onClickCapture={onNavItemClick}
-        className="navbar-brand js-scroll-trigger"
-        href={'#page-top'}
-      >
+      <a className="navbar-brand js-scroll-trigger" href="#page-top" onClick={onNavItemClick}>
         <div className="d-flex align-items-center">
           <div className="d-none d-lg-block">
             <img
@@ -74,48 +55,41 @@ const NavbarComponent: FC<NavbarComponentProps> = ({
           <div className="d-sm-inline-block d-lg-none">
             <img
               style={{ width: '30px', height: '30px' }}
-              className="img-fluid img-profile rounded-circle mx-auto mb-2"
+              className="img-fluid img-profile rounded-circle mx-auto"
               src={profileImageUrl}
               alt={name}
             />
-
-            <span className="fw-bold d-lg-none"> {name}</span>
+            <span className="fw-bold ms-2">{name}</span>
           </div>
         </div>
       </a>
+
       <button
         className={navBtnClasses}
         type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarResponsive"
         aria-controls="navbarResponsive"
         aria-expanded={open}
-        onClick={(event) => onNavClick(event)}
         aria-label="Toggle navigation"
+        onClick={onNavToggle}
       >
-        <span className="navbar-toggler-icon"></span>
+        <span className="navbar-toggler-icon" />
       </button>
+
       <div className={navBarClasses} id="navbarResponsive">
         <ul className="navbar-nav">
-          {hrefs.map((value) => {
-            const { href, text } = value
-            const active = currentSection.href === href
-            const navItemClasses: string = classNames('nav-link', 'js-scroll-trigger', {
-              active: active
-            })
-            return (
-              <li key={href} value={href} className="nav-item">
-                <a
-                  key={href}
-                  className={navItemClasses}
-                  href={href}
-                  onClickCapture={onNavItemClick}
-                >
-                  {text}
-                </a>
-              </li>
-            )
-          })}
+          {NAV_ITEMS.map(({ href, text }) => (
+            <li key={href} className="nav-item">
+              <a
+                className={classNames('nav-link', 'js-scroll-trigger', {
+                  active: currentSection.href === href
+                })}
+                href={href}
+                onClick={onNavItemClick}
+              >
+                {text}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     </nav>
