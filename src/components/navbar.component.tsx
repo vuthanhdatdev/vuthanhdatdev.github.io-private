@@ -45,21 +45,23 @@ const NavbarComponent: FC<NavbarComponentProps> = ({
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
       <a className="navbar-brand js-scroll-trigger" href="#page-top" onClick={onNavItemClick}>
         <div className="d-flex align-items-center">
-          <div className="d-none d-lg-block">
+          {/* Desktop: centered image in sidebar */}
+          <div className="d-none d-lg-block w-100 text-center">
             <img
               className="img-fluid img-profile rounded-circle mx-auto mb-2"
               src={profileImageUrl}
               alt={name}
             />
           </div>
-          <div className="d-sm-inline-block d-lg-none">
+          {/* Mobile: small image + name inline */}
+          <div className="d-flex d-lg-none align-items-center gap-2">
             <img
-              style={{ width: '30px', height: '30px' }}
-              className="img-fluid img-profile rounded-circle mx-auto"
+              style={{ width: '32px', height: '32px', objectFit: 'cover', flexShrink: 0 }}
+              className="img-fluid img-profile rounded-circle"
               src={profileImageUrl}
               alt={name}
             />
-            <span className="fw-bold ms-2">{name}</span>
+            <span className="fw-bold">{name}</span>
           </div>
         </div>
       </a>
