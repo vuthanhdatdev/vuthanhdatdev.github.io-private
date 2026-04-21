@@ -13,6 +13,7 @@ export interface WorkHistory {
   startFrom: string
   endFrom: string
   position: string
+  techStack?: string[]
 }
 
 export interface Certification {
@@ -25,13 +26,24 @@ export interface Certification {
 
 export interface Skill {
   name: string
-  iconClass: string
+  level: 'Expert' | 'Proficient' | 'Familiar'
+}
+
+export interface Interest {
+  icon: string
+  label: string
+  description: string
+}
+
+export interface Workflow {
+  label: string
+  description: string
 }
 
 export interface PortfolioInformation {
   firstName: string
   lastName: string
-  profileImageUrl?: string
+  profileImageUrl?: string | undefined
   indicator: string
   country: string
   city: string
@@ -52,4 +64,6 @@ export interface PortfolioData {
   workHistories: WorkHistory[]
   certifications: Certification[]
   skills?: Skill[]
+  interests?: Interest[]
+  workflows?: Workflow[]
 }
