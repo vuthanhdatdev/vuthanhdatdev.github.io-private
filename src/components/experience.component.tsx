@@ -6,24 +6,31 @@ export interface ExperienceComponentProps {
   sectionRef: RefObject<HTMLElement>
 }
 
-export const ExperienceRowComponent: FC<WorkHistory> = ({
+export const ExperienceRowComponent: FC<WorkHistory & { isLast: boolean }> = ({
   position,
   companyName,
   startFrom,
   endFrom,
-  detail
+  detail,
+  isLast
 }) => {
   return (
-    <div className="d-flex flex-column flex-md-row justify-content-between mb-5">
-      <div className="flex-grow-1">
-        <h3 className="mb-0 text-primary">{position}</h3>
-        <div className="subheading mb-3">{companyName}</div>
-        <p>{detail}</p>
+    <div className="experience-timeline-item">
+      <div className="experience-timeline-marker">
+        <div className="experience-timeline-dot" />
+        {!isLast && <div className="experience-timeline-line" />}
       </div>
-      <div className="flex-shrink-0">
-        <span className="text-primary">
-          {startFrom} - {endFrom || 'Present'}
-        </span>
+      <div className="d-flex flex-column flex-md-row justify-content-between mb-5 experience-timeline-content">
+        <div className="flex-grow-1">
+          <h3 className="mb-0 text-primary">{position}</h3>
+          <div className="subheading mb-3">{companyName}</div>
+          <p>{detail}</p>
+        </div>
+        <div className="flex-shrink-0">
+          <span className="text-primary">
+            {startFrom} - {endFrom || 'Present'}
+          </span>
+        </div>
       </div>
     </div>
   )
@@ -34,9 +41,15 @@ export const ExperienceComponent: FC<ExperienceComponentProps> = ({ data, sectio
     <section ref={sectionRef} className="resume-section" id="experience">
       <div className="resume-section-content">
         <h2 className="mb-5">Experience</h2>
-        {data?.map((value) => (
-          <ExperienceRowComponent key={`${value.companyName}-${value.startFrom}`} {...value} />
-        ))}
+        <div className="experience-timeline">
+          {data?.map((value, index) => (
+            <ExperienceRowComponent
+              key={`${value.companyName}-${value.startFrom}`}
+              {...value}
+              isLast={index === data.length - 1}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )
