@@ -30,7 +30,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          personal_token: ${{ secrets.GH_TOKEN }}
+          deploy_key: ${{ secrets.DEPLOY_KEY }}
           publish_dir: ./build
           publish_branch: gh-pages
           external_repository: vuthanhdatdev/vuthanhdatdev.github.io
@@ -38,20 +38,4 @@ jobs:
           user_email: 'vuthanhdat.dev+ci@gmail.com'
           commit_message: 'Deployed by GitHub Actions [run #${{ github.run_number }}]'
 
-      - name: Create GitHub Deployment
-        run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d '{
-                "ref": "gh-pages",
-                "environment": "production",
-                "auto_merge": false,
-                "required_contexts": [],
-                "payload": {
-                  "build_number": "#${{ github.run_number }}"
-                }
-              }' \
-            "https://api.github.com/repos/vuthanhdatdev/vuthanhdatdev.github.io/deployments"
 
