@@ -1,65 +1,52 @@
-import React, {Fragment, useEffect, useRef, useState} from 'react';
-import './App.css';
-import PortfolioPage from "./pages/portfolio.page";
+import { Fragment, useRef } from 'react'
+import './App.css'
+import PortfolioPage from './pages/portfolio.page'
 import { Scrollspy } from '@makotot/ghostui'
-import {PortfolioData} from "./data/portfolio.data";
-import axios, {AxiosResponse} from "axios";
+import { usePortfolioData } from './hooks/usePortfolioData'
 
 const App = () => {
-  const [data, setData] = useState<PortfolioData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, loading, error } = usePortfolioData()
 
   const sectionRefs = [
-    useRef<HTMLTableSectionElement>(null),
-    useRef<HTMLTableSectionElement>(null),
-    useRef<HTMLTableSectionElement>(null),
-    useRef<HTMLTableSectionElement>(null),
-    useRef<HTMLTableSectionElement>(null),
-    useRef<HTMLTableSectionElement>(null),
-  ];
-
-  useEffect(() => {
-    const fetchGitHubPortfolioData = async () => {
-      try {
-        const storedData = sessionStorage.getItem('portfolioData');
-        if (storedData) {
-          const parsedData = JSON.parse(storedData);
-          setData(parsedData);
-          return;
-        }
-        const url = "https://raw.githubusercontent.com/vuthanhdatdev/vuthanhdatdev/main/data.json";
-        const response: AxiosResponse<PortfolioData> = await axios.get(url);
-        sessionStorage.setItem('portfolioData', JSON.stringify(response.data));
-        setData(response.data);
-      } catch (error: any) {
-        console.log(error);
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchGitHubPortfolioData();
-  }, []);
+    useRef<HTMLElement>(null),
+    useRef<HTMLElement>(null),
+    useRef<HTMLElement>(null),
+    useRef<HTMLElement>(null),
+    useRef<HTMLElement>(null),
+    useRef<HTMLElement>(null)
+  ]
 
   if (error) {
-    console.log(error);
-    return <div>Error: {JSON.stringify(error)}</div>;
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <p className="text-danger">Failed to load portfolio data. Please try again later.</p>
+      </div>
+    )
   }
+
   if (loading || !data) {
-    return <Fragment>Loading</Fragment>
+    return (
+      <Fragment>
+        <div className="d-flex justify-content-center align-items-center vh-100">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </Fragment>
+    )
   }
+
   return (
-      <Scrollspy sectionRefs={sectionRefs}>
-        {({ currentElementIndexInViewport }) => (
-            <PortfolioPage
-                currentElementIndexInViewport={currentElementIndexInViewport}
-                sectionRefs={sectionRefs}
-                data={data}
-            />
-        )}
-      </Scrollspy>
-  );
+    <Scrollspy sectionRefs={sectionRefs}>
+      {({ currentElementIndexInViewport }) => (
+        <PortfolioPage
+          currentElementIndexInViewport={currentElementIndexInViewport}
+          sectionRefs={sectionRefs}
+          data={data}
+        />
+      )}
+    </Scrollspy>
+  )
 }
 
-export default App;
+export default App

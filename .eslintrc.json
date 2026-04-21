@@ -1,0 +1,18 @@
+{
+  "extends": ["react-app", "react-app/jest"],
+  "rules": {
+    // Match Prettier: no semicolons
+    "semi": ["error", "never"],
+    // Match Prettier: no trailing commas
+    "comma-dangle": ["error", "never"],
+    // Match Prettier: single quotes
+    "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": false }],
+    // Match Prettier: LF line endings
+    "linebreak-style": ["error", "unix"],
+    // Match tsconfig: noUnusedLocals
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "vars": "all", "args": "all", "ignoreRestSiblings": true, "argsIgnorePattern": "^_" }],
+    // Match tsconfig: noImplicitReturns
+    "consistent-return": "error"
+  }
+}
