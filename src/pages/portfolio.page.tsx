@@ -75,7 +75,7 @@ const PortfolioPage: FC<PortfolioPageProps> = ({
           {...(shortBriefLife !== undefined && { shortBriefLife })}
         />
         <hr className="m-0" />
-        <AwardComponent sectionRef={sectionRefs[5]} certifications={certifications} awards={[]} />
+        <AwardComponent sectionRef={sectionRefs[5]} certifications={certifications} />
       </div>
     </Fragment>
   )

@@ -15,15 +15,23 @@
 .btn-primary {
   background-color: #bd5d38 !important;
   border-color: #bd5d38 !important;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #a04e2e !important;
+  border-color: #a04e2e !important;
 }
 /* Offset content for fixed navbar */
 .page-content-offset {
-  padding-top: 4.5rem;
+  padding-top: 4.5rem !important;
 }
 @media (min-width: 992px) {
   .page-content-offset {
     margin-left: 17rem;
-    padding-top: 0;
+    padding-top: 0 !important;
   }
 }
 /* Heading overrides */
@@ -44,6 +52,19 @@ h6,
 h1,
 .h1 {
   line-height: 1;
+  font-size: 2.5rem;
+}
+@media (min-width: 576px) {
+  h1,
+  .h1 {
+    font-size: 4rem;
+  }
+}
+@media (min-width: 992px) {
+  h1,
+  .h1 {
+    font-size: 6rem;
+  }
 }
 p.lead {
   font-size: 1.15rem;
@@ -66,7 +87,12 @@ p.lead {
     'Noto Color Emoji';
   text-transform: uppercase;
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+}
+@media (min-width: 576px) {
+  .subheading {
+    font-size: 1.5rem;
+  }
 }
 /* Side nav */
 #sideNav {
@@ -80,6 +106,11 @@ p.lead {
 }
 #sideNav .navbar-toggler:focus {
   outline-color: #d48a6e;
+}
+/* Smooth mobile nav collapse */
+#sideNav .navbar-collapse {
+  transition: height 0.3s ease;
+  overflow: hidden;
 }
 @media (min-width: 992px) {
   #sideNav {
@@ -110,6 +141,8 @@ p.lead {
     flex-grow: 0;
     width: 100%;
     margin-bottom: auto;
+    transition: none;
+    overflow: visible;
   }
   #sideNav .navbar-collapse .navbar-nav {
     flex-direction: column;
@@ -127,23 +160,40 @@ p.lead {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 3.5rem;
-  width: 3.5rem;
+  height: 2.5rem;
+  width: 2.5rem;
   background-color: #495057;
   color: #fff;
   border-radius: 100%;
-  font-size: 1.5rem;
-  margin-right: 1.5rem;
+  font-size: 1.25rem;
+  margin-right: 1rem;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+@media (min-width: 576px) {
+  .social-icons .social-icon {
+    height: 3.5rem;
+    width: 3.5rem;
+    font-size: 1.5rem;
+    margin-right: 1.5rem;
+  }
 }
 .social-icons .social-icon:last-child {
   margin-right: 0;
 }
 .social-icons .social-icon:hover {
   background-color: #bd5d38;
+  transform: translateY(-3px);
 }
 /* Dev icons */
 .dev-icons {
-  font-size: 3rem;
+  font-size: 2rem;
+}
+@media (min-width: 576px) {
+  .dev-icons {
+    font-size: 3rem;
+  }
 }
 /* Resume sections */
 section.resume-section {
@@ -151,8 +201,8 @@ section.resume-section {
   align-items: center;
   padding-left: 1rem;
   padding-right: 1rem;
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
   max-width: 75rem;
 }
 section.resume-section .resume-section-content {
@@ -161,6 +211,8 @@ section.resume-section .resume-section-content {
 @media (min-width: 768px) {
   section.resume-section {
     min-height: 100vh;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 }
 @media (min-width: 992px) {

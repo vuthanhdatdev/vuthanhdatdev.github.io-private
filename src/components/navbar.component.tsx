@@ -52,7 +52,7 @@ const NavbarComponent: FC<NavbarComponentProps> = ({
   const navBarClasses: string = classNames('collapse', 'navbar-collapse', { show: open })
   const navBtnClasses: string = classNames('navbar-toggler', { collapsed: !open })
   const currentScrollPos =
-    !!currentElementIndexInViewport && currentElementIndexInViewport > -1
+    currentElementIndexInViewport !== undefined && currentElementIndexInViewport >= 0
       ? currentElementIndexInViewport
       : 0
   const currentSection = hrefs[currentScrollPos]

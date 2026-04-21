@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import axios, { AxiosResponse } from 'axios'
 import { PortfolioData } from '../data/portfolio.data'
 
 const DATA_URL = 'https://raw.githubusercontent.com/vuthanhdatdev/vuthanhdatdev/main/data.json'
@@ -22,11 +21,14 @@ export const usePortfolioData = (): UsePortfolioDataResult => {
         const stored = sessionStorage.getItem(SESSION_KEY)
         if (stored) {
           setData(JSON.parse(stored) as PortfolioData)
+          setLoading(false)
           return
         }
-        const response: AxiosResponse<PortfolioData> = await axios.get(DATA_URL)
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(response.data))
-        setData(response.data)
+        const response = await fetch(DATA_URL)
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`)
+        const json: PortfolioData = await response.json()
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(json))
+        setData(json)
       } catch (err) {
         console.error('Failed to fetch portfolio data:', err)
         setError(err)

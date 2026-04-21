@@ -33,8 +33,6 @@ jobs:
 
       - name: Build for production
         run: npm run build
-        env:
-          CI: false
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

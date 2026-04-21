@@ -37,8 +37,15 @@ const AboutComponent: FC<AboutComponentProps> = ({
           <span className="text-primary">{lastName}</span>
         </h1>
         <div className="subheading mb-5">
-          {address}
-          <a href={`mailto:${email}`}>{email}</a>
+          {address && (
+            <>
+              <span className="d-block d-sm-inline">{address}</span>
+              <span className="d-none d-sm-inline"> · </span>
+            </>
+          )}
+          <a className="d-block d-sm-inline" href={`mailto:${email}`}>
+            {email}
+          </a>
         </div>
         <p className="lead mb-5">{shortIntroduction}</p>
         <p className="subheading lead mb-5 align-content-center align-items-center">
