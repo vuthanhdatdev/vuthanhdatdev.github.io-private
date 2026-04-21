@@ -17,9 +17,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            node-modules-
 
       - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Build for production
@@ -37,5 +46,3 @@ jobs:
           user_name: 'Joe The Dev - GHA'
           user_email: 'vuthanhdat.dev+ci@gmail.com'
           commit_message: 'Deployed by GitHub Actions [run #${{ github.run_number }}]'
-
-
