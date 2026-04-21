@@ -30,7 +30,7 @@ export const CertificationRowComponent: FC<Certification> = ({
   return (
     <div className="d-flex flex-column flex-md-row justify-content-between mb-5">
       <div className="flex-grow-1">
-        <h3 className="mb-0">{name}</h3>
+        <h3 className="mb-0 text-primary">{name}</h3>
         <div className="subheading mb-3">{providedBy}</div>
         {score && <p>Score: {score}</p>}
       </div>

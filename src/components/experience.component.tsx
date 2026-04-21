@@ -16,7 +16,7 @@ export const ExperienceRowComponent: FC<WorkHistory> = ({
   return (
     <div className="d-flex flex-column flex-md-row justify-content-between mb-5">
       <div className="flex-grow-1">
-        <h3 className="mb-0">{position}</h3>
+        <h3 className="mb-0 text-primary">{position}</h3>
         <div className="subheading mb-3">{companyName}</div>
         <p>{detail}</p>
       </div>

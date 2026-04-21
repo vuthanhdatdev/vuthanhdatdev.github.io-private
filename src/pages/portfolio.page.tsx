@@ -49,7 +49,7 @@ const PortfolioPage: FC<PortfolioPageProps> = ({
         lastName={lastName}
         profileImageUrl={profileImageUrl}
       />
-      <div className="container-fluid p-0">
+      <div className="container-fluid p-0 page-content-offset">
         <AboutComponent
           sectionRef={sectionRefs[0]}
           firstName={displayFirstName}
