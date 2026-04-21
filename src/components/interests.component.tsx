@@ -1,5 +1,4 @@
 import { FC, RefObject } from 'react'
-import classNames from 'classnames'
 
 export interface InterestsComponentProps {
   shortBriefLife?: string[]
@@ -12,7 +11,7 @@ export const InterestsComponent: FC<InterestsComponentProps> = ({ shortBriefLife
       <div className="resume-section-content">
         <h2 className="mb-5">Interests</h2>
         {shortBriefLife?.map((value, index) => (
-          <p key={index} className={classNames({ 'mb-0': index > 0 })}>
+          <p key={index} className={index === shortBriefLife.length - 1 ? 'mb-0' : undefined}>
             {value}
           </p>
         ))}

@@ -2,7 +2,6 @@ import { FC, RefObject } from 'react'
 import { Certification } from '../data/portfolio.data'
 
 export interface AwardComponentProps {
-  awards: string[]
   certifications?: Certification[]
   sectionRef: RefObject<HTMLElement>
 }

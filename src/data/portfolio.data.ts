@@ -23,6 +23,11 @@ export interface Certification {
   providedBy: string
 }
 
+export interface Skill {
+  name: string
+  iconClass: string
+}
+
 export interface PortfolioInformation {
   firstName: string
   lastName: string
@@ -31,7 +36,6 @@ export interface PortfolioInformation {
   country: string
   city: string
   phoneNumber: string
-  address: string
   email: string
   pdfUrl: string
   githubUrl: string
@@ -47,4 +51,5 @@ export interface PortfolioData {
   educations: Education[]
   workHistories: WorkHistory[]
   certifications: Certification[]
+  skills?: Skill[]
 }
