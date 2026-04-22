@@ -5,9 +5,13 @@
     <title>Dat Portfolio</title>
     <script>
       // SPA redirect for GitHub Pages
-      // Preserve path and query string, redirect to index.html
-      const path = window.location.pathname + window.location.search
-      window.location.replace('/?redirect=' + encodeURIComponent(path))
+      // Encodes the full path+query+hash into the redirect param so index.html can restore it
+      var l = window.location
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        '/?redirect=' + encodeURIComponent(l.pathname + l.search) +
+        (l.hash ? '&hash=' + encodeURIComponent(l.hash) : '')
+      )
     </script>
   </head>
   <body></body>

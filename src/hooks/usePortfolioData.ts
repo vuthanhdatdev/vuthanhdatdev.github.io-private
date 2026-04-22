@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { PortfolioData } from '../data/portfolio.data'
+import { environment } from '../lib/environment'
 
-const DATA_URL = import.meta.env.VITE_PORTFOLIO_DATA_URL as string
+const DATA_URL = environment.portfolioDataUrl
 const SESSION_KEY = 'portfolioData'
 
 interface UsePortfolioDataResult {

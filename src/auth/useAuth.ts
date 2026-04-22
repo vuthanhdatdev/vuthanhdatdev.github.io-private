@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Session, User } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
+import { environment } from '../lib/environment'
 
 export interface AuthState {
   session: Session | null
@@ -38,7 +39,7 @@ export function useAuth(): AuthState {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${window.location.origin}/blog`,
+        redirectTo: `${environment.appUrl}/blog`,
         scopes: 'repo'
       }
     })

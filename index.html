@@ -35,6 +35,18 @@
       })
     </script>
     <title>Dat Portfolio</title>
+    <script>
+      // Restore SPA route after GitHub Pages 404 redirect
+      (function () {
+        const params = new URLSearchParams(window.location.search);
+        const redirect = params.get('redirect');
+        const hash = params.get('hash');
+        if (redirect) {
+          const url = decodeURIComponent(redirect) + (hash ? decodeURIComponent(hash) : '');
+          window.history.replaceState(null, '', url)
+        }
+      })()
+    </script>
   </head>
   <body id="page-top">
     <noscript>You need to enable JavaScript to run this app.</noscript>
