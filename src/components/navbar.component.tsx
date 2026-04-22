@@ -1,5 +1,8 @@
 import { FC, useState, MouseEvent } from 'react'
+import { Link } from '@tanstack/react-router'
 import classNames from 'classnames'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFeather } from '@fortawesome/free-solid-svg-icons'
 
 const NAV_ITEMS = [
   { href: '#about', text: 'About' },
@@ -92,6 +95,12 @@ const NavbarComponent: FC<NavbarComponentProps> = ({
               </a>
             </li>
           ))}
+          <li className="nav-item">
+            <Link to="/blog" className="nav-link" onClick={onNavItemClick}>
+              <FontAwesomeIcon icon={faFeather} className="me-1" />
+              Blog
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>

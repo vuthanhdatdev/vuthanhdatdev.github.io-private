@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx eslint:*)",
+      "Bash(npm run:*)",
+      "Bash(npx tsc:*)"
+    ]
+  }
+}
