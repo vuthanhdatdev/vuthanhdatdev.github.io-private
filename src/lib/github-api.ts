@@ -1,6 +1,8 @@
-const OWNER = import.meta.env.VITE_GITHUB_OWNER as string
-const REPO = import.meta.env.VITE_GITHUB_REPO as string
-const POSTS_PATH = (import.meta.env.VITE_GITHUB_POSTS_PATH as string) || 'posts'
+import { environment } from './environment'
+
+const OWNER = environment.github.owner
+const REPO = environment.github.repo
+const POSTS_PATH = environment.github.postsPath
 
 export interface PostMeta {
   slug: string
