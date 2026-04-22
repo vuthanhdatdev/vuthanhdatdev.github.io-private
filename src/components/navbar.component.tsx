@@ -95,13 +95,22 @@ const NavbarComponent: FC<NavbarComponentProps> = ({
               </a>
             </li>
           ))}
-          <li className="nav-item">
+          {/* Mobile only: Blog link inline with nav items */}
+          <li className="nav-item d-lg-none">
             <Link to="/blog" className="nav-link" onClick={onNavItemClick}>
               <FontAwesomeIcon icon={faFeather} className="me-1" />
               Blog
             </Link>
           </li>
         </ul>
+
+        {/* Desktop only: Blog link pinned to bottom of sidebar */}
+        <div className="d-none d-lg-block mt-auto w-100 navbar-blog-bottom">
+          <Link to="/blog" className="nav-link" onClick={onNavItemClick}>
+            <FontAwesomeIcon icon={faFeather} className="me-1" />
+            Blog
+          </Link>
+        </div>
       </div>
     </nav>
   )
