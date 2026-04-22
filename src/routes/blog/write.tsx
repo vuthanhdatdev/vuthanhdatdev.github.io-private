@@ -1,4 +1,4 @@
-import { createRoute, useNavigate, redirect } from '@tanstack/react-router'
+import { createRoute, useNavigate } from '@tanstack/react-router'
 import { Route as blogRoute } from './route'
 import { useState } from 'react'
 import { createPost } from '../../lib/github-api'
@@ -9,12 +9,7 @@ import { faFloppyDisk, faSpinner } from '@fortawesome/free-solid-svg-icons'
 export const Route = createRoute({
   getParentRoute: () => blogRoute,
   path: 'write',
-  beforeLoad: async ({ context }: { context: { githubToken?: string } }) => {
-    if (!context.githubToken) {
-      throw redirect({ to: '/blog' })
-    }
-  },
-  component: BlogWrite,
+  component: BlogWrite
 })
 
 function slugify(title: string): string {
@@ -24,19 +19,28 @@ function slugify(title: string): string {
     .replace(/^-|-$/g, '')
 }
 
-function buildMarkdown(title: string, date: string, description: string, tags: string, content: string): string {
+function buildMarkdown(
+  title: string,
+  date: string,
+  description: string,
+  tags: string,
+  content: string
+): string {
   return `---
 title: "${title}"
 date: "${date}"
 description: "${description}"
-tags: [${tags.split(',').map((t) => `"${t.trim()}"`).join(', ')}]
+tags: [${tags
+    .split(',')
+    .map((t) => `"${t.trim()}"`)
+    .join(', ')}]
 ---
 
 ${content}`
 }
 
 function BlogWrite() {
-  const { githubToken, user } = useAuth()
+  const { githubToken, user, loading } = useAuth()
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
@@ -45,6 +49,14 @@ function BlogWrite() {
   const [content, setContent] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  if (loading) {
+    return (
+      <div className="blog-loading">
+        <FontAwesomeIcon icon={faSpinner} spin /> Loading...
+      </div>
+    )
+  }
 
   if (!githubToken || !user) {
     return <div className="blog-error">You must be signed in to write posts.</div>
@@ -74,10 +86,17 @@ function BlogWrite() {
       <div className="blog-write-header">
         <h1 className="blog-page-title">New Post</h1>
         <button className="btn btn-primary" onClick={handleSave} disabled={saving}>
-          {saving
-            ? <><FontAwesomeIcon icon={faSpinner} spin className="me-2" />Saving...</>
-            : <><FontAwesomeIcon icon={faFloppyDisk} className="me-2" />Publish</>
-          }
+          {saving ? (
+            <>
+              <FontAwesomeIcon icon={faSpinner} spin className="me-2" />
+              Saving...
+            </>
+          ) : (
+            <>
+              <FontAwesomeIcon icon={faFloppyDisk} className="me-2" />
+              Publish
+            </>
+          )}
         </button>
       </div>
 
@@ -104,7 +123,9 @@ function BlogWrite() {
             />
           </div>
           <div className="blog-field flex-grow-1">
-            <label className="blog-label">Tags <span className="blog-hint">(comma separated)</span></label>
+            <label className="blog-label">
+              Tags <span className="blog-hint">(comma separated)</span>
+            </label>
             <input
               className="blog-input"
               value={tags}
@@ -123,7 +144,9 @@ function BlogWrite() {
           />
         </div>
         <div className="blog-field">
-          <label className="blog-label">Content <span className="blog-hint">(Markdown)</span></label>
+          <label className="blog-label">
+            Content <span className="blog-hint">(Markdown)</span>
+          </label>
           <textarea
             className="blog-textarea"
             value={content}
@@ -136,4 +159,3 @@ function BlogWrite() {
     </div>
   )
 }
-

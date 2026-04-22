@@ -6,14 +6,20 @@ import { Route as blogIndexRoute } from './routes/blog/index'
 import { Route as blogSlugRoute } from './routes/blog/$slug'
 import { Route as blogWriteRoute } from './routes/blog/write'
 
+// Handle GitHub Pages 404 redirect
+const redirectParam = new URLSearchParams(window.location.search).get('redirect')
+if (redirectParam) {
+  window.history.replaceState(null, '', decodeURIComponent(redirectParam))
+}
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
-  blogRoute.addChildren([blogIndexRoute, blogSlugRoute, blogWriteRoute]),
+  blogRoute.addChildren([blogIndexRoute, blogSlugRoute, blogWriteRoute])
 ])
 
 export const router = createRouter({
   routeTree,
-  defaultPreload: 'intent',
+  defaultPreload: 'intent'
 })
 
 declare module '@tanstack/react-router' {
@@ -21,4 +27,3 @@ declare module '@tanstack/react-router' {
     router: typeof router
   }
 }
-

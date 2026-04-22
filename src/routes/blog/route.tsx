@@ -8,7 +8,7 @@ import { faFeather, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
   path: '/blog',
-  component: BlogLayout,
+  component: BlogLayout
 })
 
 function BlogLayout() {
@@ -68,4 +68,3 @@ function BlogLayout() {
     </div>
   )
 }
-

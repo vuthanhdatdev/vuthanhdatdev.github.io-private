@@ -9,6 +9,7 @@ export interface PostMeta {
   description: string
   tags: string[]
   sha: string
+  draft?: boolean
 }
 
 export interface Post extends PostMeta {
@@ -26,18 +27,25 @@ function decodeBase64(base64: string): string {
 
 function parseFrontmatter(raw: string): { meta: Omit<PostMeta, 'slug' | 'sha'>; content: string } {
   const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
-  if (!match) return { meta: { title: 'Untitled', date: '', description: '', tags: [] }, content: raw }
+  if (!match)
+    return { meta: { title: 'Untitled', date: '', description: '', tags: [] }, content: raw }
 
   const frontmatter = match[1]
   const content = match[2].trim()
-  const meta: Record<string, string | string[]> = {}
+  const meta: Record<string, string | string[] | boolean> = {}
 
   frontmatter.split('\n').forEach((line) => {
     const [key, ...rest] = line.split(':')
     if (!key) return
     const value = rest.join(':').trim()
     if (key.trim() === 'tags') {
-      meta[key.trim()] = value.replace(/[\[\]]/g, '').split(',').map((t) => t.trim()).filter(Boolean)
+      meta[key.trim()] = value
+        .replace(/[[\]]/g, '')
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean)
+    } else if (key.trim() === 'draft') {
+      meta[key.trim()] = value === 'true'
     } else {
       meta[key.trim()] = value.replace(/^["']|["']$/g, '')
     }
@@ -49,21 +57,21 @@ function parseFrontmatter(raw: string): { meta: Omit<PostMeta, 'slug' | 'sha'>; 
       date: (meta.date as string) || '',
       description: (meta.description as string) || '',
       tags: (meta.tags as string[]) || [],
+      draft: (meta.draft as boolean) || false
     },
-    content,
+    content
   }
 }
 
 export async function fetchPosts(githubToken?: string): Promise<PostMeta[]> {
   const headers: Record<string, string> = {
-    Accept: 'application/vnd.github.v3+json',
+    Accept: 'application/vnd.github.v3+json'
   }
   if (githubToken) headers['Authorization'] = `Bearer ${githubToken}`
 
-  const res = await fetch(
-    `https://api.github.com/repos/${OWNER}/${REPO}/contents/${POSTS_PATH}`,
-    { headers }
-  )
+  const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${POSTS_PATH}`, {
+    headers
+  })
   if (!res.ok) {
     if (res.status === 404) return []
     throw new Error(`Failed to fetch posts: ${res.status}`)
@@ -82,12 +90,12 @@ export async function fetchPosts(githubToken?: string): Promise<PostMeta[]> {
     })
   )
 
-  return posts.sort((a, b) => (a.date < b.date ? 1 : -1))
+  return posts.filter((p) => githubToken || !p.draft).sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
 export async function fetchPost(slug: string, githubToken?: string): Promise<Post> {
   const headers: Record<string, string> = {
-    Accept: 'application/vnd.github.v3+json',
+    Accept: 'application/vnd.github.v3+json'
   }
   if (githubToken) headers['Authorization'] = `Bearer ${githubToken}`
 
@@ -117,12 +125,12 @@ export async function createPost(
       headers: {
         Accept: 'application/vnd.github.v3+json',
         Authorization: `Bearer ${githubToken}`,
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         message: `Add post: ${slug}`,
-        content: encoded,
-      }),
+        content: encoded
+      })
     }
   )
   if (!res.ok) {
@@ -145,13 +153,13 @@ export async function updatePost(
       headers: {
         Accept: 'application/vnd.github.v3+json',
         Authorization: `Bearer ${githubToken}`,
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         message: `Update post: ${slug}`,
         content: encoded,
-        sha,
-      }),
+        sha
+      })
     }
   )
   if (!res.ok) {
@@ -160,3 +168,69 @@ export async function updatePost(
   }
 }
 
+export async function deletePost(slug: string, githubToken: string): Promise<void> {
+  // Always fetch the latest sha before deleting to avoid stale sha errors
+  const getRes = await fetch(
+    `https://api.github.com/repos/${OWNER}/${REPO}/contents/${POSTS_PATH}/${slug}.md`,
+    {
+      headers: {
+        Accept: 'application/vnd.github.v3+json',
+        Authorization: `Bearer ${githubToken}`
+      }
+    }
+  )
+  if (!getRes.ok) {
+    const err = await getRes.json()
+    throw new Error(err.message || 'Failed to fetch post for deletion')
+  }
+  const file: { sha: string } = await getRes.json()
+
+  const res = await fetch(
+    `https://api.github.com/repos/${OWNER}/${REPO}/contents/${POSTS_PATH}/${slug}.md`,
+    {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/vnd.github.v3+json',
+        Authorization: `Bearer ${githubToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Delete post: ${slug}`,
+        sha: file.sha
+      })
+    }
+  )
+  if (!res.ok) {
+    const err = await res.json()
+    throw new Error(err.message || 'Failed to delete post')
+  }
+}
+
+export async function toggleDraftPost(
+  slug: string,
+  sha: string,
+  draft: boolean,
+  githubToken: string
+): Promise<void> {
+  // Fetch current raw content first
+  const res = await fetch(
+    `https://api.github.com/repos/${OWNER}/${REPO}/contents/${POSTS_PATH}/${slug}.md`,
+    {
+      headers: {
+        Accept: 'application/vnd.github.v3+json',
+        Authorization: `Bearer ${githubToken}`
+      }
+    }
+  )
+  if (!res.ok) throw new Error('Failed to fetch post for draft toggle')
+  const file: { content: string } = await res.json()
+  const raw = decodeBase64(file.content)
+
+  let updated: string
+  if (/^draft:/m.test(raw)) {
+    updated = raw.replace(/^draft:.*/m, `draft: ${draft}`)
+  } else {
+    updated = raw.replace(/^---\n/, `---\ndraft: ${draft}\n`)
+  }
+  await updatePost(slug, updated, sha, githubToken)
+}

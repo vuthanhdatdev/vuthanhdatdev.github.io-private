@@ -8,7 +8,7 @@ import PortfolioPage from '../pages/portfolio.page'
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: PortfolioRoute,
+  component: PortfolioRoute
 })
 
 function PortfolioRoute() {
@@ -20,7 +20,7 @@ function PortfolioRoute() {
     useRef<HTMLElement>(null),
     useRef<HTMLElement>(null),
     useRef<HTMLElement>(null),
-    useRef<HTMLElement>(null),
+    useRef<HTMLElement>(null)
   ]
 
   if (error) {
@@ -55,4 +55,3 @@ function PortfolioRoute() {
     </Scrollspy>
   )
 }
-

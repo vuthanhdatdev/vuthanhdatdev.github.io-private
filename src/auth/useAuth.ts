@@ -13,9 +13,12 @@ export interface AuthState {
 
 export function useAuth(): AuthState {
   const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
+  // If supabase is not configured, there is nothing to load
+  const [loading, setLoading] = useState(!!supabase)
 
   useEffect(() => {
+    if (!supabase) return undefined
+
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session)
       setLoading(false)
@@ -25,20 +28,24 @@ export function useAuth(): AuthState {
       setSession(session)
     })
 
-    return () => listener.subscription.unsubscribe()
+    return () => {
+      listener.subscription.unsubscribe()
+    }
   }, [])
 
   const signIn = async () => {
+    if (!supabase) return
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${window.location.origin}/blog/write`,
-        scopes: 'repo',
-      },
+        redirectTo: `${window.location.origin}/blog`,
+        scopes: 'repo'
+      }
     })
   }
 
   const signOut = async () => {
+    if (!supabase) return
     await supabase.auth.signOut()
   }
 
@@ -48,7 +55,6 @@ export function useAuth(): AuthState {
     githubToken: (session?.provider_token as string | null) ?? null,
     loading,
     signIn,
-    signOut,
+    signOut
   }
 }
-

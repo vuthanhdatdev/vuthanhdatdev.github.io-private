@@ -2,26 +2,37 @@ import { createRoute, Link } from '@tanstack/react-router'
 import { Route as blogRoute } from './route'
 import { useEffect, useState } from 'react'
 import { fetchPosts, PostMeta } from '../../lib/github-api'
+import { useAuth } from '../../auth/useAuth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCalendar, faTag, faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { faCalendar, faTag, faSpinner, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 export const Route = createRoute({
   getParentRoute: () => blogRoute,
   path: '/',
-  component: BlogIndex,
+  component: BlogIndex
 })
 
 function BlogIndex() {
+  const { githubToken, loading: authLoading } = useAuth()
   const [posts, setPosts] = useState<PostMeta[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loadedToken, setLoadedToken] = useState<string | null | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
 
+  const loading = authLoading || loadedToken !== (githubToken ?? null)
+
   useEffect(() => {
-    fetchPosts()
-      .then(setPosts)
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false))
-  }, [])
+    if (authLoading) return
+    fetchPosts(githubToken ?? undefined)
+      .then((data) => {
+        setPosts(data)
+        setError(null)
+        setLoadedToken(githubToken ?? null)
+      })
+      .catch((e) => {
+        setError(e.message)
+        setLoadedToken(githubToken ?? null)
+      })
+  }, [githubToken, authLoading])
 
   if (loading) {
     return (
@@ -43,9 +54,21 @@ function BlogIndex() {
       ) : (
         <div className="blog-post-list">
           {posts.map((post) => (
-            <Link key={post.slug} to="/blog/$slug" params={{ slug: post.slug }} className="blog-post-card">
+            <Link
+              key={post.slug}
+              to="/blog/$slug"
+              params={{ slug: post.slug }}
+              className={`blog-post-card${post.draft ? ' blog-post-card--draft' : ''}`}
+            >
               <div className="blog-post-card-body">
-                <h2 className="blog-post-title">{post.title}</h2>
+                <div className="blog-post-card-title-row">
+                  <h2 className="blog-post-title">{post.title}</h2>
+                  {post.draft && (
+                    <span className="blog-draft-badge">
+                      <FontAwesomeIcon icon={faEyeSlash} className="me-1" /> Draft
+                    </span>
+                  )}
+                </div>
                 <p className="blog-post-desc">{post.description}</p>
                 <div className="blog-post-meta">
                   {post.date && (
@@ -69,4 +92,3 @@ function BlogIndex() {
     </div>
   )
 }
-
